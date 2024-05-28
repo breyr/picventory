@@ -6,6 +6,6 @@
 	$user;
 </script>
 
-<main class="flex min-h-screen">
+<main class="flex min-h-dvh">
 	<slot />
 </main>

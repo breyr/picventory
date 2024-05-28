@@ -1,11 +1,11 @@
 <script lang="ts">
     import { auth } from '$lib/firebase';
-    import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+    import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 
     async function signInWithGoogle() {
         const provider = new GoogleAuthProvider();
         // automatically gets updated with onAuthStateChane in user store
-        await signInWithPopup(auth, provider);
+        await signInWithRedirect(auth, provider);
     }
 </script>
 
