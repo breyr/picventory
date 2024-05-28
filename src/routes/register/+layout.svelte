@@ -9,7 +9,7 @@
     </AnimatedRoute>
     <ul class="steps">
         <a href="/register" class="step step-primary">Register</a>
-        <a href="/register/username" class="step step-primary" class:step-primary={$page.route.id?.match(/username|tags/g)}>Select Username</a>
-        <a href="/register/tags" class="step" class:step-primary={$page.route.id?.includes("tags")}>Select first tags</a>
+        <a href="/register/username" class="step step-primary" class:step-primary={$page.route.id?.match(/username|tags/g)}>Choose Username</a>
+        <a href="/register/tags" class="step" class:step-primary={$page.route.id?.includes("tags")}>Select Tags</a>
     </ul>
 </main>

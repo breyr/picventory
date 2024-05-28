@@ -3,11 +3,12 @@
     import { page } from "$app/stores";
     import { auth, userData } from "$lib/firebase";
     import { signOut } from "firebase/auth";
+    import { fly } from "svelte/transition";
 </script>
 
 
 <!-- nav bar -->
-<main class="flex-1">
+<main class="flex-1" in:fly={{ x: "100%", duration: 500, delay: 500 }}>
     <div class="navbar bg-base-100">
         <div class="navbar-start">
             <div class="dropdown">
@@ -23,7 +24,7 @@
                         <button class="btn mb-3" on:click={() => goto(`/${$userData?.username}/tags`)}>My tags</button>
                     </li>
                     <li>
-                        <button class="btn btn-primary" on:click={() => {signOut(auth); goto("/login")}}>sign out</button>
+                        <button class="btn btn-primary" on:click={() => {signOut(auth); goto("/")}}>sign out</button>
                     </li>
                 </ul>
             </div>

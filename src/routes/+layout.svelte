@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { user } from "$lib/firebase";
+	import { user, userData } from "$lib/firebase";
 	import "../app.css";
 
 	// global accessing
 	$user;
+	$userData;
 </script>
 
 <main class="flex min-h-dvh">

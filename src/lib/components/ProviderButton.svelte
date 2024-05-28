@@ -9,5 +9,7 @@
     }
 </script>
 
-<button class="btn btn-primary" on:click={signInWithGoogle}><i class="fa-brands fa-google"></i> Sign In</button>
-
+<button class="btn btn-success" on:click={signInWithGoogle}>
+    <i class="fa-brands fa-google"></i> 
+    Sign In With Google
+</button>
