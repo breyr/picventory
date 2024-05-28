@@ -1,10 +1,10 @@
 import { PUBLIC_FIREBASE_API_KEY, PUBLIC_FIREBASE_APP_ID, PUBLIC_FIREBASE_AUTH_DOMAIN, PUBLIC_FIREBASE_MEASUREMENT_ID, PUBLIC_FIREBASE_MESSAGING_SENDER_ID, PUBLIC_FIREBASE_PROJECT_ID, PUBLIC_FIREBASE_STORAGE_BUCKET } from "$env/static/public";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
-import { doc, getFirestore, onSnapshot } from "firebase/firestore";
+import { collection, doc, getFirestore, onSnapshot, query, where } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { derived, writable, type Readable } from "svelte/store";
-import type { UserData } from "./customtypes";
+import type { UserData, UserItem } from "./customtypes";
 
 const firebaseConfig = {
     apiKey: PUBLIC_FIREBASE_API_KEY,
@@ -59,6 +59,7 @@ export function docStore<T>(path: string) {
 
     const docRef = doc(db, path);
 
+    // listening for new documents with the uid of the current signed in user
     const { subscribe } = writable<T | null>(null, (set) => {
         unsubscribe = onSnapshot(docRef, (snapshot) => {
             set((snapshot.data() as T) ?? null);
@@ -82,3 +83,36 @@ export const userData: Readable<UserData | null> = derived(user, ($user, set) =>
         set(null);
     }
 });
+
+/**
+ * @param  {string} firebase user id
+ * @returns a store with realtime updates on items data
+ */
+export function itemsStore<T>(uid: string) {
+    let unsubscribe: () => void;
+
+    const collectionRef = collection(db, 'items');
+    const q = query(collectionRef, where('uid', '==', uid));
+
+    const { subscribe } = writable<{ id: string, data: T }[] | null>(null, (set) => {
+        unsubscribe = onSnapshot(q, (snapshot) => {
+            const items = snapshot.docs.map(doc => ({ id: doc.id, data: doc.data() as T }));
+            set(items);
+        });
+
+        return () => unsubscribe;
+    })
+
+    return {
+        subscribe,
+    };
+}
+
+// derived store form $user to get all items associated with $user
+export const userItems: Readable<{ id: string, data: UserItem }[] | null> = derived(user, ($user, set) => {
+    if ($user) {
+        return itemsStore<UserItem>($user.uid).subscribe(set);
+    } else {
+        set(null);
+    }
+})

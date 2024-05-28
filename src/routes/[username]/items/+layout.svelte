@@ -8,7 +8,7 @@
 
 
 <!-- nav bar -->
-<main class="flex-1" in:fly={{ x: "100%", duration: 500, delay: 500 }}>
+<main class="flex-1" in:fly={{ x: "100%", duration: 300 }}>
     <div class="navbar bg-base-100">
         <div class="navbar-start">
             <div class="dropdown">
@@ -29,7 +29,7 @@
                 </ul>
             </div>
         </div>
-        <p class="font-bold capitalize text-sm">{$page.route.id?.split("/")[2]}</p>
+        <p class="font-bold capitalize text-sm">{$page.route.id?.split("/").slice(-1)[0]}</p>
         <div class="navbar-end mr-3">
             @{$userData?.username}
         </div>
