@@ -21,6 +21,8 @@ export const db = getFirestore();
 export const auth = getAuth();
 export const storage = getStorage();
 
+// TODO there is an unsubscribing error when signing out
+
 /**
  * @returns a store with the current firebase user
  */

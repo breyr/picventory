@@ -6,7 +6,6 @@
     let items: { id: string, data: UserItem }[] | null;
     $: {
         items = $userItems;
-        console.log(items);
     }
 </script>
 

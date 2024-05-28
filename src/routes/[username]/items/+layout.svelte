@@ -4,6 +4,11 @@
     import { auth, userData } from "$lib/firebase";
     import { signOut } from "firebase/auth";
     import { fly } from "svelte/transition";
+
+    async function signOutSSR() {
+        const res = await fetch("/api/signin", { method: "DELETE" })
+        await signOut(auth);
+    }
 </script>
 
 
@@ -24,7 +29,7 @@
                         <button class="btn mb-3" on:click={() => goto(`/${$userData?.username}/tags`)}>My tags</button>
                     </li>
                     <li>
-                        <button class="btn btn-primary" on:click={() => {signOut(auth); goto("/")}}>sign out</button>
+                        <button class="btn btn-primary" on:click={async () => {await signOutSSR(); goto("/")}}>sign out</button>
                     </li>
                 </ul>
             </div>
