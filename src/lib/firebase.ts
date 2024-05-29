@@ -1,7 +1,7 @@
-import { PUBLIC_FIREBASE_API_KEY, PUBLIC_FIREBASE_APP_ID, PUBLIC_FIREBASE_AUTH_DOMAIN, PUBLIC_FIREBASE_MEASUREMENT_ID, PUBLIC_FIREBASE_MESSAGING_SENDER_ID, PUBLIC_FIREBASE_PROJECT_ID, PUBLIC_FIREBASE_STORAGE_BUCKET } from "$env/static/public";
+import { PUBLIC_FIREBASE_API_KEY, PUBLIC_FIREBASE_APP_ID, PUBLIC_FIREBASE_AUTH_DOMAIN, PUBLIC_FIREBASE_MEASUREMENT_ID, PUBLIC_FIREBASE_MESSAGING_SENDER_ID, PUBLIC_FIREBASE_PROJECT_ID, PUBLIC_FIREBASE_STORAGE_BUCKET, PUBLIC_MODE } from "$env/static/public";
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged, type User } from "firebase/auth";
-import { collection, doc, getFirestore, onSnapshot, query, where } from "firebase/firestore";
+import { connectAuthEmulator, getAuth, onAuthStateChanged, type User } from "firebase/auth";
+import { collection, connectFirestoreEmulator, doc, getFirestore, onSnapshot, query, where } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { derived, writable, type Readable } from "svelte/store";
 import type { UserData, UserItem } from "./customtypes";
@@ -20,6 +20,12 @@ export const app = initializeApp(firebaseConfig);
 export const db = getFirestore();
 export const auth = getAuth();
 export const storage = getStorage();
+
+// use emulators on dev
+if (PUBLIC_MODE == "dev") {
+    connectAuthEmulator(auth, "http://localhost:9099");
+    connectFirestoreEmulator(db, '127.0.0.1', 8080);
+}
 
 // TODO there is an unsubscribing error when signing out
 

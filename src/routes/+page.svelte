@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
 	import { goto } from "$app/navigation";
 	import ProviderButton from "$lib/components/ProviderButton.svelte";
-	import { userData } from "$lib/firebase";
+	import { user, userData } from "$lib/firebase";
 
+    // if store is not null redirect to items - account has been setup
     $: if ($userData) {
         goto(`/${$userData?.username}/items`);
     }
@@ -15,5 +16,10 @@
         <p>or login if you have an account already setup</p>
         <span class="text-neutral">|</span>
     </div>
-    <ProviderButton />
+    {#if !$user} 
+        <ProviderButton />
+    <!-- user signed in, but no associated data means account hasn't been set up yet -->
+    {:else if ($user && !$userData)} 
+        {goto('/register')}
+    {/if}
 </main>

@@ -1,7 +1,7 @@
 <script lang="ts">
     import AuthCheck from "$lib/components/AuthCheck.svelte";
     import { db, user, userData } from "$lib/firebase";
-    import { doc, getDoc, writeBatch } from "firebase/firestore";
+    import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 
     let username = "";
     let loading = false;
@@ -35,17 +35,19 @@
         const batch = writeBatch(db);
         // set document in usernames of username to users uid
         batch.set(doc(db, "usernames", username), { uid: $user?.uid });
-        // create default document inside users collection, user will edit this later
+        // create default document inside users collection
         batch.set(doc(db, "users", $user!.uid), {
             username,
-            items: [
-                {
-                    name: "Water Bottle",
-                    photoURL: "",
-                    tags: ["home"],
-                }
-            ],
             tags: ["home"]
+        });
+        // create a new document reference with an auto-generated ID in the items collection
+        const newItemRef = doc(collection(db, "items"));
+        // create first item for new user inside items collection
+        batch.set(newItemRef, {
+            name: "Water Bottle",
+            photoURL: "https://target.scene7.com/is/image/Target/GUEST_11c3d57e-ebe2-40d2-bffa-d5ff1e3c0d7e?qlt=65&fmt=pjpeg&hei=350&wid=350",
+            tags: ["home"],
+            uid: $user!.uid
         });
 
         await batch.commit();
