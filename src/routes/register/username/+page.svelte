@@ -1,5 +1,6 @@
 <script lang="ts">
     import AuthCheck from "$lib/components/AuthCheck.svelte";
+    import UserDataCheck from "$lib/components/UserDataCheck.svelte";
     import { db, user, userData } from "$lib/firebase";
     import { collection, doc, getDoc, writeBatch } from "firebase/firestore";
 
@@ -59,15 +60,7 @@
 
 <AuthCheck>
     <h2 class="text-3xl text-center font-bold mb-3">Select Username</h2>
-    {#if $userData?.username}
-    <div class="flex flex-col text-center">
-        <p>
-            Your username is <span class="font-bold text-blue-400">@{$userData.username}</span>
-        </p>
-        <p class="italic">(usernames cannot be changed)</p>
-        <a class="btn btn-neutral my-3" href="/register/tags">continue <i class="fa-solid fa-arrow-right"></i></a>
-    </div>
-    {:else}
+    <UserDataCheck message="You've already selected a username!">
         <form on:submit|preventDefault={confirmUsername}>
             <input 
                 type="text"
@@ -101,5 +94,5 @@
                 {/if}
             </div>
         </form>
-    {/if}
+    </UserDataCheck>
 </AuthCheck>
