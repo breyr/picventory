@@ -22,7 +22,7 @@ export const auth = getAuth();
 export const storage = getStorage();
 
 // use emulators on dev
-if (PUBLIC_MODE === "dev") {
+if (PUBLIC_MODE == "dev") {
     connectAuthEmulator(auth, "http://localhost:9099");
     connectFirestoreEmulator(db, '127.0.0.1', 8080);
 }
