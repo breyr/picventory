@@ -3,7 +3,7 @@ export interface UserItem {
     name: string;
     photoURL: string;
     tags: string[];
-    userId: string;
+    uid: string;
 };
 
 export interface UserData {
