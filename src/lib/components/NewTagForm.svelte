@@ -52,14 +52,14 @@
 </script>
 
 <form class="sm:w-1/2 sm:mx-auto sm:flex sm:flex-col sm:items-center" transition:slide={{ duration: 300, easing: quintOut, axis: 'y' }}>
-<label class="form-control w-full max-w-xs">
+<label class="form-control w-full">
     <div class="label">
         <span class="label-text">New tag</span>
     </div>
     <input 
         type="text"
         placeholder="tag name"
-        class="input input-bordered w-full max-w-xs mb-4"
+        class="input input-bordered w-full mb-4"
         bind:value={newTagName}
         on:input={checkTagAvailability}
     />
@@ -77,24 +77,26 @@
         #{newTagName} is already saved
     </p>
 {/if}
-{#if isAvailable && isValid}
-    <button 
-        class="btn btn-success" 
-        on:click={async () => {
-            await saveTag();
-        }}
-        disabled={saving}
-    >
-        {#if saving}
-        <span class="loading loading-dots loading-sm"></span>
-        {:else}
-        <i class="fa-solid fa-plus"></i> 
-        {/if}
-        add
+<div class="flex flex-row w-full sm:w-96 sm:mx-auto justify-end gap-3 sm:px-8">
+    {#if isAvailable && isValid}
+        <button 
+            class="btn btn-success" 
+            on:click={async () => {
+                await saveTag();
+            }}
+            disabled={saving}
+        >
+            {#if saving}
+            <span class="loading loading-dots loading-sm"></span>
+            {:else}
+            <i class="fa-solid fa-plus"></i> 
+            {/if}
+            add
+        </button>
+    {/if}
+    <button class="btn btn-neutral" on:click={() => { newTagName = ''; showFormStore.set(!$showFormStore); }}>
+        done
     </button>
-{/if}
-<button class="btn btn-neutral" on:click={() => { newTagName = ''; showFormStore.set(!$showFormStore); }}>
-    done
-</button>
+</div>
 </form>
 

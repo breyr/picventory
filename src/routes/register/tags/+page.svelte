@@ -46,7 +46,7 @@
                 <p>done? add your first item!</p>
                 <span class="text-neutral">|</span>
             </div>
-            <button on:click={updateUserDocAndNavigatie} class="btn btn-neutral" disabled={completingRegistration}>
+            <button on:click={updateUserDocAndNavigatie} class="btn btn-neutral sm:w-96 sm:mx-auto w-full" disabled={completingRegistration}>
                 {#if completingRegistration}
                     <span class="loading loading-spinner loading-md"></span>
                 {/if}
