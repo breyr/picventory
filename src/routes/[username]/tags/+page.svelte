@@ -16,10 +16,13 @@
     let loading = false;
     let userTags: string[] | undefined;
     let filteredTags: string[] | undefined;
+    let filteredTagsLength = 0;
+
     $: userTags = $userData?.tags;
     $: {
         loading = true;
         filteredTags = userTags?.filter(t => t.includes(searchTerm));
+        filteredTagsLength = filteredTags ? filteredTags.length : 0;
         loading = false;
     }
 </script>
@@ -39,19 +42,25 @@
         {/if}
     </div>
     <div class="flex-1 flex-grow overflow-auto flex flex-col gap-2 sm:w-48 sm:mx-auto">
-        <!-- this is here for when filtering takes a while, or we don't have tags loaded yet  -->
-        {#if loading || !filteredTags}
+        {#if loading}
             <span class="loading loading-dots loading-sm mx-auto"></span>
+        {:else if filteredTagsLength === 0}
+            <!-- didn't find anything for search -->
+            <p class="text-center">no tags matching search: <span class="font-semibold text-blue-400">{searchTerm}</span></p>
         {:else}
-            {#each filteredTags as tag}
-                <div class="flex flex-row justify-between items-center bg-base-300 p-3 rounded-md">
-                    <p class="font-semibold text-md">#{tag}</p>
-                    <form method="POST" use:enhance>
-                        <input type="hidden" value={tag} name="tagName" />
-                        <button type="submit" class="btn btn-error btn-outline"><i class="fa-solid fa-trash-can"></i></button>
-                    </form>
-                </div>
-            {/each}
+            <!-- might not have any tags stored to begin with so we must check -->
+            <!-- should always have one though -->
+            {#if filteredTags}
+                {#each filteredTags as tag}
+                    <div class="flex flex-row justify-between items-center bg-base-300 p-3 rounded-md">
+                        <p class="font-semibold text-md">#{tag}</p>
+                        <form method="POST" use:enhance>
+                            <input type="hidden" value={tag} name="tagName" />
+                            <button type="submit" class="btn btn-error btn-outline"><i class="fa-solid fa-trash-can"></i></button>
+                        </form>
+                    </div>
+                {/each}
+            {/if}
         {/if}
     </div>
     {#if form?.message}
