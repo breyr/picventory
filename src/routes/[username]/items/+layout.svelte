@@ -1,6 +1,8 @@
 <script lang="ts">
+
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
+    import NotificationToast from "$lib/components/NotificationToast.svelte";
     import { auth, userData } from "$lib/firebase";
     import { signOut } from "firebase/auth";
     import { fly } from "svelte/transition";
@@ -40,4 +42,5 @@
         </div>
     </div>
     <slot />
+    <NotificationToast />
 </main>

@@ -9,4 +9,5 @@ export interface UserItem {
 export interface UserData {
     username: string;
     tags: string[];
+    registrationComplete: boolean;
 };

@@ -16,10 +16,10 @@
         }
     }
 </script>
-<main class="flex-1 flex flex-col justify-center p-5">
+<main class="flex-1 flex flex-col justify-center p-5 items-center">
     <h1 class="text-5xl mb-10 text-center font-bold">Picventory</h1>
     <button 
-        class="btn btn-primary" 
+        class="btn btn-primary sm:w-96 w-full" 
         on:click={async () => await goto('/register')}
         disabled={$loadingStore}
     >

@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
 	import AuthCheck from "$lib/components/AuthCheck.svelte";
-	import UserDataCheck from "$lib/components/UserDataCheck.svelte";
 	import type { UserData } from "$lib/customtypes";
 	import { db, user, userData } from '$lib/firebase';
 	import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -12,6 +12,7 @@
     let loading = false;
     let isAvailable = false;
     let saving = false;
+    let completingRegistration = false;
 
     let debounceTimer: NodeJS.Timeout;
 
@@ -49,18 +50,30 @@
         saving = false;
         newTagName = '';
     }
+
+    async function updateUserDocAndNavigatie() {
+        // don't need to set back to false since the user is being redirected to items
+        // if they try to access registraion again after completing it
+        completingRegistration = true;
+        const ref = doc(db, "users", $user!.uid);
+        // update registrationComplete to true
+        await updateDoc(ref, {
+            registrationComplete: true
+        })
+        await goto(`/${$userData?.username}/items`);
+    }
+
 </script>
 <AuthCheck>
-    <h2 class="text-3xl font-bold text-center">Add some tags</h2>
-    <UserDataCheck message="You've already completed this registration step!">
-        <p class="mt-4 text-center">Tags on your account:</p>
-        <div class="flex flex-wrap gap-2 items-center justify-center my-5">
-            {#each userTags as tag}
-                <div class="badge badge-neutral">#{tag}</div>
-            {/each}
-        </div>
-        {#if showForm}
-        <form transition:slide={{ duration: 300, easing: quintOut, axis: 'y' }}>
+    <h2 class="text-3xl font-bold text-center mb-3">Add some tags</h2>
+    <p class="mt-4 text-center">Tags on your account:</p>
+    <div class="flex flex-wrap gap-2 items-center justify-center my-5">
+        {#each userTags as tag}
+            <div class="badge badge-neutral">#{tag}</div>
+        {/each}
+    </div>
+    {#if showForm}
+        <form class="sm:w-1/2 sm:mx-auto sm:flex sm:flex-col sm:items-center" transition:slide={{ duration: 300, easing: quintOut, axis: 'y' }}>
             <label class="form-control w-full max-w-xs">
                 <div class="label">
                     <span class="label-text">New tag</span>
@@ -106,20 +119,25 @@
                 done
             </button>
         </form>
-        {:else}
+    {:else}
         <div class="flex flex-col">
-            <button class="btn btn-primary" on:click={() => showForm = !showForm}>
+            <button class="btn btn-primary sm:w-96 sm:mx-auto w-full" on:click={() => showForm = !showForm} disabled={completingRegistration}>
                 Create a new tag
             </button>
-            {#if userTags.length > 0}
+            <!-- we require at least one tag -->
+            {#if userTags.length >= 1}
             <div class="text-center my-5">
                 <span class="text-neutral">|</span>
                 <p>done? add your first item!</p>
                 <span class="text-neutral">|</span>
             </div>
-            <a href={`/${$userData?.username}/items`} class="btn btn-neutral">continue <i class="fa-solid fa-arrow-right"></i></a>
+            <button on:click={updateUserDocAndNavigatie} class="btn btn-neutral" disabled={completingRegistration}>
+                {#if completingRegistration}
+                    <span class="loading loading-spinner loading-md"></span>
+                {/if}
+                continue <i class="fa-solid fa-arrow-right"></i>
+            </button>
             {/if}
         </div>
-        {/if}
-    </UserDataCheck>
+    {/if}
 </AuthCheck>

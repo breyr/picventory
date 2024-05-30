@@ -38,8 +38,8 @@
     }
 </script>
 
-<button 
-    class="btn btn-success" 
+<button
+    class="btn btn-success sm:w-96 w-full" 
     on:click={() => {loadingStore.set(true); signInWithGoogle();}}
     disabled={$loadingStore}
 >
