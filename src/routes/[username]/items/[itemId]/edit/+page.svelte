@@ -24,7 +24,7 @@
         </div>
     {/if}
     <div class="flex flex-row justify-between gap-2 sm:mt-12 mt-8 px-10">
-        <button class="btn btn-error btn-outline btn-sm" disabled={!loading}><i class="fa-solid fa-trash"></i> Delete</button>
-        <button class="btn btn-success btn-outline btn-sm" disabled={!loading}><i class="fa-regular fa-floppy-disk"></i> Save</button>
+        <button class="btn btn-error btn-outline btn-sm" disabled={loading}><i class="fa-solid fa-trash"></i> Delete</button>
+        <button class="btn btn-success btn-outline btn-sm" disabled={loading}><i class="fa-regular fa-floppy-disk"></i> Save</button>
     </div>
 </div>

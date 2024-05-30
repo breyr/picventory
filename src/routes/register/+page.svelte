@@ -1,9 +1,17 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
-    import { auth, user } from '$lib/firebase';
+    import { auth, user, userData } from '$lib/firebase';
     import { signOut } from 'firebase/auth';
+    import { writable } from "svelte/store";
     import { fly } from 'svelte/transition';
     import ProviderButton from '../../lib/components/ProviderButton.svelte';
+
+    let loadingStore = writable(false);
+
+    // if store is not null redirect to items - account has been setup
+    $: if ($userData) {
+        loadingStore.set(false);
+    }
 
     async function signOutSSR() {
         const res = await fetch("/api/signin", { method: "DELETE" })
@@ -21,8 +29,10 @@
             
         </div>
     {:else}
-        <div class="mt-3">
-            <ProviderButton />
+        <div class="mt-3 flex flex-col items-center">
+            <ProviderButton {loadingStore} />
+            <br>
+            <span class="loading loading-dots loading-lg mt-3" class:hidden={!$loadingStore}></span>
         </div>
     {/if}
 </div>
