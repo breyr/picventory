@@ -7,8 +7,7 @@
 	import { slide } from "svelte/transition";
 
     export let showFormStore: Writable<boolean>;
-
-    let showForm = false;
+        
     let newTagName = "";
     let loading = false;
     let isAvailable = false;

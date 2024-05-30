@@ -29,7 +29,7 @@
                         <button class="btn mb-3" on:click={() => goto(`/${$userData?.username}/items`)}>My items</button>
                     </li>
                     <li>
-                        <button class="btn mb-3" on:click={() => goto(`/${$userData?.username}/tags`)}>My tags</button>
+                        <button class="btn mb-3" on:click={() => goto(`/${$userData?.username}/mytags`)}>My tags</button>
                     </li>
                     <li>
                         <button class="btn btn-primary" on:click={async () => {await signOutSSR()}}>sign out</button>
