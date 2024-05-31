@@ -44,9 +44,11 @@
     <div class="flex-1 flex-grow overflow-auto flex flex-col gap-2 sm:w-48 sm:mx-auto">
         {#if loading}
             <span class="loading loading-dots loading-sm mx-auto"></span>
-        {:else if filteredTagsLength === 0}
+        {:else if filteredTagsLength === 0 && searchTerm}
             <!-- didn't find anything for search -->
             <p class="text-center">no tags matching search: <span class="font-semibold text-blue-400">{searchTerm}</span></p>
+        {:else if filteredTagsLength === 0 && !searchTerm}
+            <p class="text-center">you have no tags</p>
         {:else}
             <!-- might not have any tags stored to begin with so we must check -->
             <!-- should always have one though -->

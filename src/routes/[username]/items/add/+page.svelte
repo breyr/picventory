@@ -60,12 +60,12 @@
                 updatedAt: Date.now(),
             })
     
-            uploading = false;
             resetFields();
             notificationStore.set("item saved");
         } catch (err: any) {
-            uploading = false;
             notificationStore.set("error saving, please try again");
+        } finally {
+            uploading = false;
         }
     }
 </script>
@@ -111,7 +111,7 @@
             <!-- new item associated tags -->
             {#if storedTags}
             <h3 class="font-semibold">Select tags:</h3>
-            <div class="flex flex-wrap justify-center px-5 overflow-y-auto">
+            <div class="flex flex-wrap justify-center px-5 overflow-y-auto gap-2">
                 {#each storedTags as tag}
                     <ClickableTag text={tag} storeName="new item" />
                 {/each}
@@ -125,7 +125,11 @@
                 </button>
                 <button class="btn btn-primary text-white sm:w-96 sm:mx-auto" on:click={() => fileInput.click()} disabled={uploading}>
                     <i class="fa-solid fa-camera"></i>
+                    {#if imagePreview}
+                    change photo
+                    {:else}
                     add photo
+                    {/if}
                 </button>
                 <button class="flex flex-col justify-center items-center flex-grow"  on:click={resetFields} disabled={uploading}>
                     <i class="fa-solid fa-rotate-left"></i>
