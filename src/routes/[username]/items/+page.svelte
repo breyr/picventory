@@ -90,8 +90,7 @@
                     {#each filteredItems as item (item.id)}
                         <a href={`/${$userData?.username}/items/edit/${item.id}`}>
                             <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105 sm:w-96 sm:h-96">
-                                <!-- TODO add loading placeholder -->
-                                <figure>
+                                <figure class="h-48">
                                     <img src={item.data.photoURL} alt="photoURL" />
                                 </figure>
                                 <div class="card-body">
