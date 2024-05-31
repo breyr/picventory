@@ -81,7 +81,7 @@
         <!-- filter by selecting tags modal -->
         <Modal bind:showModal>
             <h2 slot="header" class="font-bold text-lg text-blue-400">
-                Filter
+                Filter Items by Tags
             </h2>
             <!-- put tags here -->
             {#if storedTags}
