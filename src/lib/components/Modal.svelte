@@ -16,11 +16,11 @@
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
 		<!-- svelte-ignore a11y-autofocus -->
-        <div class="flex flex-row justify-between items-center">
-            <slot name="header" />
-            <button autofocus on:click={() => dialog.close()} class="btn btn-neutral btn-ghost">close</button>
+        <div class="flex flex-row justify-end items-center">
+			<button autofocus on:click={() => dialog.close()} class="text-red-400"><i class="fa-regular fa-circle-xmark text-2xl"></i></button>
         </div>
-		<div class="mb-4">
+		<slot name="header" />
+		<div class="mt-10">
 			<slot />
 		</div>
 	</div>

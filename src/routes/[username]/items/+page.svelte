@@ -2,7 +2,7 @@
     import AuthCheck from '$lib/components/AuthCheck.svelte';
     import ClickableTag from '$lib/components/ClickableTag.svelte';
     import Modal from '$lib/components/Modal.svelte';
-    import { selectedTagsStore } from '$lib/customStores';
+    import { selectedFilterTagsStore } from '$lib/customStores';
     import type { UserItem } from '$lib/customtypes';
     import { userData, userItems } from '$lib/firebase';
 
@@ -17,7 +17,7 @@
 
     $: storedItems = $userItems;
     $: storedTags = $userData?.tags;
-    $: selectedTags = $selectedTagsStore;
+    $: selectedTags = $selectedFilterTagsStore;
     $: {
         loading = true;
         filteredItems = storedItems?.filter(item => 
@@ -37,10 +37,17 @@
                 <input type="text" class="grow" placeholder="Search" bind:value={searchTerm}/>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" /></svg>
             </label>
-            <button class="btn" on:click={() => showModal = true}>
-                <i class="fa-solid fa-filter"></i>
-                Filter
-            </button>
+            <div class="flex flex-row gap-2">
+                <a class="btn flex-grow" href={`/${$userData?.username}/items/add`}>
+                    <i class="fa-solid fa-plus"></i>
+                    Add
+                </a>
+                <button class="btn flex-grow" on:click={() => showModal = true}>
+                    <i class="fa-solid fa-filter"></i>
+                    Filter
+                </button>
+            </div>
+            
         </div>
         {#if loading }
             <span class="loading loading-dots loading-sm mx-auto"></span>
@@ -57,7 +64,7 @@
                 <!-- might not have any items stored to begin with so we must check -->
                 {#if filteredItems}
                     {#each filteredItems as item (item.id)}
-                        <a href={`/${$userData?.username}/items/${item.id}/edit`}>
+                        <a href={`/${$userData?.username}/items/edit/${item.id}`}>
                             <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105">
                                 <figure><img src={item.data.photoURL} alt="photoURL" /></figure>
                                 <div class="card-body">
@@ -80,17 +87,20 @@
         {/if}
         <!-- filter by selecting tags modal -->
         <Modal bind:showModal>
-            <h2 slot="header" class="font-bold text-lg text-blue-400">
-                Filter Items by Tags
+            <h2 slot="header" class="font-semibold">
+                Filter Items by Tags:
             </h2>
             <!-- put tags here -->
             {#if storedTags}
-                <div class="flex flex-wrap justify-center gap-2">
+                <div class="flex flex-wrap justify-center gap-2 mb-10">
                     {#each storedTags as tag}
-                        <ClickableTag text={tag} />
+                        <ClickableTag text={tag} storeName="filter" />
                     {/each}
                 </div>
             {/if}
+            <div class="flex flex-row justify-end">
+                <button class="btn btn-error" on:click={() => selectedFilterTagsStore.set([])}>clear filter</button>
+            </div>
         </Modal>
     </main>
 </AuthCheck>

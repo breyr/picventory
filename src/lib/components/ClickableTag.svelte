@@ -1,22 +1,28 @@
 <script lang="ts">
-    import { selectedTagsStore } from "$lib/customStores";
+    import { selectedFilterTagsStore, selectedNewItemTagsStore } from "$lib/customStores";
 
     export let text: string;
+    export let storeName: "filter" | "new item";
 
     let thisTagSelected = false;
     let selected: string[] | [];
 
-    $: selected = $selectedTagsStore;
+    let store = storeName === 'filter' ? selectedFilterTagsStore : selectedNewItemTagsStore;
+
+    $: {
+        selected = $store;
+        thisTagSelected = selected.includes(text);
+    }
 
     function handleClick() {
         // update if the tag is selected or not
         thisTagSelected = !thisTagSelected;
         if (thisTagSelected) {
             // the tag is not selected, add it to the store
-            selectedTagsStore.set([...selected, text]);
+            store.set([...selected, text]);
         } else {
             // the tag is already selected, remove it from the store
-            selectedTagsStore.set(selected.filter(tag => tag !== text));
+            store.set(selected.filter(tag => tag !== text));
         }
     }
 </script>

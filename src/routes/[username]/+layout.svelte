@@ -1,11 +1,25 @@
 <script lang="ts">
-
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
     import NotificationToast from "$lib/components/NotificationToast.svelte";
     import { auth, userData } from "$lib/firebase";
     import { signOut } from "firebase/auth";
     import { fly } from "svelte/transition";
+
+    // have to do this because the edit route is behind /[itemId]
+    let currentRoute: string;
+    $: {
+        const isEditRoute = $page.route.id!.includes("edit");
+        const isAddRoute = $page.route.id!.includes("add");
+        const [, lastPart] = $page.route.id!.split("/[username]");
+        if (isEditRoute) {
+            currentRoute = "Edit";
+        } else if (isAddRoute) {
+            currentRoute = "Add";
+        } else {
+            currentRoute = lastPart.replace(/\//g, "");
+        }
+    }
 
     async function signOutSSR() {
         const res = await fetch("/api/signin", { method: "DELETE" })
@@ -37,7 +51,7 @@
                 </ul>
             </div>
         </div>
-        <p class="font-bold capitalize text-sm">{$page.route.id?.split("/").slice(-1)[0]}</p>
+        <p class="font-bold capitalize text-sm">{currentRoute}</p>
         <div class="navbar-end mr-3">
             @{$userData?.username}
         </div>
