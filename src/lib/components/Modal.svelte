@@ -19,7 +19,7 @@
         <div class="flex flex-row justify-end items-center">
 			<button autofocus on:click={() => dialog.close()} class="text-red-400"><i class="fa-regular fa-circle-xmark text-2xl"></i></button>
         </div>
-		<slot name="header" />
+		<slot name="header"/>
 		<div class="mt-10">
 			<slot />
 		</div>

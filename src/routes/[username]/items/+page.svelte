@@ -15,6 +15,8 @@
     let filteredItems: { id: string, data: UserItem }[] | undefined;
     let filteredItemsLength = 0;
 
+    // TODO add custom sorting in the filter modal
+    // storedItems are sorted by lastest updated DESC by default for now according to $userItems
     $: storedItems = $userItems;
     $: storedTags = $userData?.tags;
     $: selectedTags = $selectedFilterTagsStore;
@@ -52,25 +54,31 @@
         {#if loading }
             <span class="loading loading-dots loading-sm mx-auto"></span>
         {:else if filteredItemsLength === 0}
-            {#if selectedTags.length === 0}
+            {#if selectedTags.length > 0}
             <!-- didn't find anything for search term -->
             <p class="text-center">no items matching search: <span class="font-semibold text-blue-400">{searchTerm}</span></p>
-            {:else}
+            {:else if searchTerm !== ""}
             <!-- didn't find anything for search term -->
             <p class="text-center">no items matching tag(s): <span class="font-semibold text-blue-400">{selectedTags.toString()}</span></p>
+            {:else}
+            <div class="text-center">
+                <p>You have no items stored.</p>
+                <a href={`/${$userData?.username}/items/add`} class="text-primary">add one <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
             {/if}
         {:else}
-            <div class="flex flex-wrap justify-around gap-2">
+            <div class="flex flex-wrap sm:justify-normal justify-around sm:gap-5 gap-2">
                 <!-- might not have any items stored to begin with so we must check -->
                 {#if filteredItems}
                     {#each filteredItems as item (item.id)}
                         <a href={`/${$userData?.username}/items/edit/${item.id}`}>
-                            <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105">
+                            <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105 sm:w-96 sm:h-96">
                                 <figure><img src={item.data.photoURL} alt="photoURL" /></figure>
                                 <div class="card-body">
                                     <h2 class="card-title">
                                     {item.data.name}
                                     </h2>
+                                    <span>{item.data.description}</span>
                                     <div class="card-actions justify-between">
                                         <div>
                                             {#each item.data.tags as tag}

@@ -40,18 +40,6 @@
             tags: [],
             registrationComplete: false
         });
-        // TODO only for testing - will comment out when done testing
-        // don't need to give the user a default item in the beginning
-        // that way I can use tag length > 1 to see if a user is registered, will also have to enforce a user always having one tag
-        // create a new document reference with an auto-generated ID in the items collection
-        const newItemRef = doc(collection(db, "items"));
-        // create first item for new user inside items collection
-        batch.set(newItemRef, {
-            name: "Water Bottle",
-            photoURL: "https://target.scene7.com/is/image/Target/GUEST_11c3d57e-ebe2-40d2-bffa-d5ff1e3c0d7e?qlt=65&fmt=pjpeg&hei=350&wid=350",
-            tags: ["home"],
-            uid: $user!.uid
-        });
 
         await batch.commit();
 
