@@ -16,7 +16,6 @@
     let filteredItemsLength = 0;
 
     // TODO add custom sorting in the filter modal
-    // storedItems are sorted by lastest updated DESC by default for now according to $userItems
     $: storedItems = $userItems;
     $: storedTags = $userData?.tags;
     $: selectedTags = $selectedFilterTagsStore;
