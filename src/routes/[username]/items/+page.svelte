@@ -15,6 +15,21 @@
     let filteredItems: { id: string, data: UserItem }[] | undefined;
     let filteredItemsLength = 0;
 
+    const loadImages = async (items: { id: string, data: UserItem }[]) => {
+        loading = true;
+        await Promise.all(
+            items!.map(item => {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.src = item.data.photoURL;
+                    img.onload = resolve;
+                    img.onerror = reject;
+                });
+            })
+        );
+        loading = false;
+    };
+
     // TODO add custom sorting in the filter modal
     $: storedItems = $userItems;
     $: storedTags = $userData?.tags;
@@ -29,6 +44,7 @@
         filteredItemsLength = filteredItems ? filteredItems.length : 0;
         loading = false;
     }
+    $: if (storedItems) loadImages(storedItems);
 </script>
 
 <AuthCheck>
@@ -51,7 +67,9 @@
             
         </div>
         {#if loading }
-            <span class="loading loading-dots loading-sm mx-auto"></span>
+            <div class="flex flex-row justify-center">
+                <span class="loading loading-dots loading-sm mx-auto"></span>
+            </div>
         {:else if filteredItemsLength === 0}
             {#if selectedTags.length > 0}
             <!-- didn't find anything for search term -->
@@ -72,7 +90,10 @@
                     {#each filteredItems as item (item.id)}
                         <a href={`/${$userData?.username}/items/edit/${item.id}`}>
                             <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105 sm:w-96 sm:h-96">
-                                <figure><img src={item.data.photoURL} alt="photoURL" /></figure>
+                                <!-- TODO add loading placeholder -->
+                                <figure>
+                                    <img src={item.data.photoURL} alt="photoURL" />
+                                </figure>
                                 <div class="card-body">
                                     <h2 class="card-title">
                                     {item.data.name}
