@@ -2,14 +2,14 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import AnimatedRoute from '$lib/components/AnimatedRoute.svelte';
-	import { notification } from '$lib/customStores';
+	import { notificationStore } from '$lib/customStores';
 	import { user, userData } from '$lib/firebase';
 
     // if a signed in and registered user trys to access any pages in this route, redirect to their items
     $: if($user && $userData?.registrationComplete ) {
         // if they are on the tags page then I don't need to send the notification
         if (!$page.route.id?.includes("tags")) {
-            notification.set('You completed registration already.');
+            notificationStore.set('You completed registration already.');
         }
         goto(`/${$userData?.username}/items`);
     }
