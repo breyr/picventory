@@ -118,7 +118,7 @@
 </script>
 
 <AuthCheck>
-    <div class="flex-1 flex flex-col justify-center sm:px-0 px-5 sm:w-96 w-full sm:mx-auto">
+    <div class="flex-1 flex flex-col justify-center bg-blue-400 sm:px-0 px-5 sm:w-96 w-full sm:mx-auto">
         <a href={`/${$userData?.username}/items`}><i class="fa-solid fa-arrow-left"></i> back</a>
         {#if loading}
             <div class="flex flex-col gap-4 w-full sm:w-96">
@@ -131,7 +131,7 @@
             <div class="flex flex-col justify-center">
                 {#if imagePreview}
                 <div class="h-48 w-48 mx-auto my-5">
-                    <img src={imagePreview} alt="preview" class="w-full h-full object-cover"/>
+                    <img src={imagePreview} alt="preview" class="w-full h-full object-contain"/>
                 </div>
                 {:else}
                 <div class="border text-9xl px-5 py-5 rounded-md my-5 h-48 w-48 flex flex-col justify-center items-center mx-auto">
@@ -177,7 +177,7 @@
                 <i class="fa-regular fa-floppy-disk"></i>
                 save
             </button>
-            <button class="btn btn-primary text-white sm:w-96 sm:mx-auto" on:click={() => fileInput.click()} disabled={uploading || loading}>
+            <button class="btn btn-primary text-white sm:w-48 sm:mx-auto" on:click={() => fileInput.click()} disabled={uploading || loading}>
                 <i class="fa-solid fa-camera"></i>
                 {#if imagePreview}
                 change photo
