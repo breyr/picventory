@@ -89,9 +89,10 @@
                 {#if filteredItems}
                     {#each filteredItems as item (item.id)}
                         <a href={`/${$userData?.username}/items/edit/${item.id}`}>
-                            <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105 sm:w-96 sm:h-96">
-                                <figure class="h-48">
-                                    <img src={item.data.photoURL} alt="photoURL" />
+                            <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105 sm:w-96 sm:h-96 w-80">
+                                <figure class="h-48 w-full relative">
+                                    <img src={item.data.photoURL} alt="photoURL" class="absolute inset-0 w-full h-full object-cover blur" />
+                                    <img src={item.data.photoURL} alt="photoURL" class="w-3/4 h-3/4 object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                                 </figure>
                                 <div class="card-body">
                                     <h2 class="card-title">
@@ -131,3 +132,9 @@
         </Modal>
     </main>
 </AuthCheck>
+
+<style>
+.blur {
+    backdrop-filter: blur(5px);
+}
+</style>
