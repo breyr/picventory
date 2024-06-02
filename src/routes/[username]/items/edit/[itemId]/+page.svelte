@@ -118,7 +118,7 @@
 </script>
 
 <AuthCheck>
-    <div class="flex-1 flex flex-col justify-center bg-blue-400 sm:px-0 px-5 sm:w-96 w-full sm:mx-auto">
+    <div class="flex-1 flex flex-col justify-center sm:px-0 px-5 sm:w-96 w-full sm:mx-auto">
         <a href={`/${$userData?.username}/items`}><i class="fa-solid fa-arrow-left"></i> back</a>
         {#if loading}
             <div class="flex flex-col gap-4 w-full sm:w-96">
