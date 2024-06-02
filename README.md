@@ -1,38 +1,25 @@
-# create-svelte
+# Picventory
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Picventory is a web application designed to provide a simple and elegant picture inventory system. It's built with SvelteKit and hosted on Firebase.
 
-## Creating a project
+## Project Overview
 
-If you're seeing this, you've probably already done this step. Congrats!
+The primary motivation behind Picventory was to create a convenient platform for storing images of various items. While the initial use case was to help manage a Bath and Body Works collection, the application's functionality extends to a wide range of inventory management needs.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Features
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- **Image Upload:** Users can easily upload images of their items to the platform.
+- **Inventory Management:** Users can categorize and manage their items effectively.
+- **Search and Filter:** Users can quickly find specific items using the search and filter options.
+- **User-friendly Interface:** The application boasts a clean and intuitive interface, making it easy for users to navigate and manage their inventory.
 
-## Developing
+## Demo
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Getting Started
 
-```bash
-npm run dev
+To get started with Picventory, you can register [here](https://picventory.web.app)
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Contact
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+If you have any questions, feel free to reach out to us.
+**
