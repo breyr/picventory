@@ -71,12 +71,15 @@
                 <span class="loading loading-dots loading-sm mx-auto"></span>
             </div>
         {:else if filteredItemsLength === 0}
-            {#if selectedTags.length > 0}
-            <!-- didn't find anything for search term -->
+            {#if searchTerm && selectedTags.length > 0}
             <p class="text-center">no items matching search: <span class="font-semibold text-blue-400">{searchTerm}</span></p>
-            {:else if searchTerm !== ""}
+            <p class="text-center">no items matching tag(s): <span class="font-semibold text-blue-400">{selectedTags.toString()}</span></p>
+            {:else if selectedTags.length > 0 && !searchTerm}
             <!-- didn't find anything for search term -->
             <p class="text-center">no items matching tag(s): <span class="font-semibold text-blue-400">{selectedTags.toString()}</span></p>
+            {:else if searchTerm && selectedTags.length == 0}
+            <p class="text-center">no items matching search: <span class="font-semibold text-blue-400">{searchTerm}</span></p>
+            <!-- didn't find anything for search term -->
             {:else}
             <div class="text-center">
                 <p>You have no items stored.</p>
