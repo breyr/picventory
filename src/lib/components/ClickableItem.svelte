@@ -23,7 +23,7 @@
         // need to set src for blurredImg and img
         blurredImg.src = imgSrc;
         img.src = imgSrc;
-        imgLoaded = true;
+        img.onload = () => imgLoaded = true;
     }
 
     onMount(() => {
@@ -58,6 +58,12 @@
     .fade-in.loaded {
         opacity: 1;
     }
+
+    .placeholder {
+        z-index: 1000;
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 <a href={`/${$userData?.username}/items/edit/${item.id}`} bind:this={itemContainer}>
@@ -65,6 +71,9 @@
         <figure class="h-48 w-full relative">
             <img alt="" class="absolute inset-0 w-full h-full object-cover blur" bind:this={blurredImg} />
             <img alt="" class="w-3/4 h-3/4 object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 fade-in" bind:this={img} class:loaded={imgLoaded} />
+            {#if !imgLoaded}
+                <div class="placeholder skeleton"></div>
+            {/if}
         </figure>
         <div class="card-body">
             <h2 class="card-title">
