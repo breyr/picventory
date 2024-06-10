@@ -1,5 +1,6 @@
 <script lang="ts">
     import AuthCheck from '$lib/components/AuthCheck.svelte';
+    import ClickableItem from '$lib/components/ClickableItem.svelte';
     import ClickableTag from '$lib/components/ClickableTag.svelte';
     import Modal from '$lib/components/Modal.svelte';
     import { selectedFilterTagsStore } from '$lib/customStores';
@@ -15,21 +16,6 @@
     let filteredItems: { id: string, data: UserItem }[] | undefined;
     let filteredItemsLength = 0;
 
-    const loadImages = async (items: { id: string, data: UserItem }[]) => {
-        loading = true;
-        await Promise.all(
-            items!.map(item => {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.src = item.data.photoURL;
-                    img.onload = resolve;
-                    img.onerror = reject;
-                });
-            })
-        );
-        loading = false;
-    };
-
     // TODO add custom sorting in the filter modal
     $: storedItems = $userItems;
     $: storedTags = $userData?.tags;
@@ -44,7 +30,6 @@
         filteredItemsLength = filteredItems ? filteredItems.length : 0;
         loading = false;
     }
-    $: if (storedItems) loadImages(storedItems);
 </script>
 
 <AuthCheck>
@@ -91,27 +76,7 @@
                 <!-- might not have any items stored to begin with so we must check -->
                 {#if filteredItems}
                     {#each filteredItems as item (item.id)}
-                        <a href={`/${$userData?.username}/items/edit/${item.id}`}>
-                            <div class="card bg-base-200 shadow-xl mb-3 transform transition-all duration-200 hover:scale-105 sm:w-96 sm:h-96 w-80">
-                                <figure class="h-48 w-full relative">
-                                    <img src={item.data.photoURL} alt="photoURL" class="absolute inset-0 w-full h-full object-cover blur" />
-                                    <img src={item.data.photoURL} alt="photoURL" class="w-3/4 h-3/4 object-contain absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-                                </figure>
-                                <div class="card-body">
-                                    <h2 class="card-title">
-                                    {item.data.name}
-                                    </h2>
-                                    <span>{item.data.description}</span>
-                                    <div class="card-actions justify-between">
-                                        <div>
-                                            {#each item.data.tags as tag}
-                                                <div class="badge badge-primary font-bold"># {tag}</div> 
-                                            {/each}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                        <ClickableItem {item} />
                     {/each}
                 {/if}
             </div>
@@ -135,9 +100,3 @@
         </Modal>
     </main>
 </AuthCheck>
-
-<style>
-.blur {
-    backdrop-filter: blur(5px);
-}
-</style>
